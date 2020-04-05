@@ -1,3 +1,6 @@
+import { ColorGenerator } from './colorGenerator';
+import { createDomNode } from './helpers';
+
 export class Keyboard {
   constructor() {
     this.keyboardElements = {
@@ -8,14 +11,24 @@ export class Keyboard {
   }
 
   generateKeyboard() {
-    this.keyboardElements.main = this.createDomNode(this.element.main, "div", "keyboard");
-    this.keyboardElements.keysContainer = this.createDomNode(this.keyboardElements.main, "div", "keyboard__keys");
+    this.keyboardElements.main = createDomNode("div", "keyboard");
+    this.keyboardElements.keysContainer = createDomNode("div", "keyboard__keys");
+
+    this.keyboardElements.main.append(this.keyboardElements.keysContainer);
+    document.body.append(this.keyboardElements.main);
   }
 
-  createDomNode(node, element, ...classes) {
-    node = document.createElement(element);
-    node.classList.add(...classes);
+  paintKeyboard() {
+    let colorGenerator = new ColorGenerator();
 
-    return node;
+    let textColor = colorGenerator.getTextColor();
+    let backgroundColor = colorGenerator.getBackgroundColor();
+
+    this.keyboardElements.main.style.backgroundColor = backgroundColor;
+
+    let keys = document.querySelectorAll(".keyboard__key");
+    keys.forEach((el) => {
+      el.style.color = textColor;
+    });
   }
 }
