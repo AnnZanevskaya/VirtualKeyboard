@@ -2,14 +2,33 @@
 <html lang="en">
 
 <head>
+  <title>Virtual Keyboard</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Virtual Keyboard</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="./styles/keyboard.css">
 </head>
 
 <body>
+  <textarea name="" id="" cols="30" rows="10"></textarea>
 
-  <script src="./src/app.js"></script>
+  <div class="keyboard">
+    <div class="keyboard__keys">
+      <button type="button" class="keyboard__key">a</button>
+      <button type="button" class="keyboard__key keyboard__key_wide">
+        <i class="material-icons">backspace</i>
+      </button>
+      <button type="button" class="keyboard__key keyboard__key_extra-wide">
+        <i class="material-icons">space_bar</i>
+      </button>
+      <button type="button" class="keyboard__key keyboard__key_wide keyboard__key_activatable keyboard__key_active">
+        <i class="material-icons">keyboard_capslock</i>
+      </button>
+    </div>
+  </div>
+
+  <script src="./dist/main.js"></script>
 </body>
 
 </html>

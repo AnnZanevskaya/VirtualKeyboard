@@ -6,6 +6,15 @@
   "extends": ["airbnb/base"],
   "rules":{
     "no-console":"warn",
-    "eol-last":"off"
+    "eol-last":"off",
+    "linebreak-style":"off",
+    "no-param-reassign": "off",
+    "class-methods-use-this": "off",
+    "import/prefer-default-export": "off",
+    "comma-dangle": "off",
+    "quotes": "off",
+    "no-plusplus":"off",
+    "no-use-before-define":"off",
+    "radix":"off"
   }
 }
