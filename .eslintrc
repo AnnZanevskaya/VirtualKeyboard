@@ -17,6 +17,6 @@
     "no-use-before-define":"off",
     "radix":"off",
     "no-undef":"warn",
-    "prefer-const":"off"
+    "no-trailing-spaces":"off"
   }
 }
