@@ -1,8 +1,18 @@
-import { Keyboard } from './keyboard';
+import {
+  Keyboard
+} from './keyboard';
+import {
+  TextArea
+} from './textArea';
 
 window.addEventListener("DOMContentLoaded", () => {
-  const keyboard = new Keyboard();
+  const textArea = new TextArea();
+  const texAreaElement = textArea.createTextArea();
 
-  keyboard.generateKeyboard();
+  const keyboard = new Keyboard();
+  const keyboardElement = keyboard.createKeyboard();
   keyboard.paintKeyboard();
+  
+  document.body.append(texAreaElement);
+  document.body.append(keyboardElement);
 });

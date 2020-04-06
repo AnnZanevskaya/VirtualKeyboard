@@ -24,7 +24,7 @@ export class Keyboard {
     };
   }
 
-  generateKeyboard() {
+  createKeyboard() {
     this.keyboardElements.main = document.createElement("div");
     this.keyboardElements.main.classList.add("keyboard");
 
@@ -36,7 +36,7 @@ export class Keyboard {
 
     this.keyboardElements.main.append(this.keyboardElements.keysContainer);
 
-    document.body.append(this.keyboardElements.main);
+    return this.keyboardElements.main;
   }
 
   paintKeyboard() {
@@ -68,6 +68,8 @@ export class Keyboard {
           keyElement.addEventListener("click", () => {
             this.properties.value = this.properties.value
               .substring(0, this.properties.value.length - 1);
+
+            this.updateInputValue();
           });
 
           break;
@@ -78,6 +80,7 @@ export class Keyboard {
 
           keyElement.addEventListener("click", () => {
             this.properties.value += "   ";
+            this.updateInputValue();
           });
 
           break;
@@ -94,6 +97,8 @@ export class Keyboard {
             } else {
               keyElement.classList.toggle("keyboard__key_active-dark", this.properties.capsLock);
             }
+
+            this.updateInputValue();
           });
 
           break;
@@ -110,6 +115,7 @@ export class Keyboard {
 
           keyElement.addEventListener("click", () => {
             this.properties.value += "\n";
+            this.updateInputValue();
           });
 
           break;
@@ -120,6 +126,7 @@ export class Keyboard {
 
           keyElement.addEventListener("click", () => {
             this.properties.value += " ";
+            this.updateInputValue();
           });
 
           break;
@@ -131,6 +138,7 @@ export class Keyboard {
 
           keyElement.addEventListener("click", () => {
             this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+            this.updateInputValue();
           });
 
           break;
@@ -162,5 +170,10 @@ export class Keyboard {
     }
 
     return fragment;
+  }
+
+  updateInputValue() {
+    const textArea = document.querySelector(".keyboard-input");
+    textArea.value = this.properties.value;
   }
 }
