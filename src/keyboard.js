@@ -147,16 +147,81 @@ export class Keyboard {
             this.properties.value = this.properties.capsLock ? this.inputValue + key.toUpperCase() : this.inputValue + key.toLowerCase();
             this.updateInputValue();
           });
-
+          
           break;
         }
       }
+
+      keyElement.addEventListener("mousedown", () => {
+        keyElement.classList.add("keyboard__key_pressed");
+      });
+
+      window.addEventListener("mouseup", () => {
+        keyElement.classList.remove("keyboard__key_pressed");
+      });
 
       fragment.append(keyElement);
       fragment = this.checkLineBreak(fragment, key);
     });
 
     return fragment;
+  }
+
+  handleKeyboardTyping(e) {
+    e.preventDefault();
+
+    const {
+      keyCode,
+      key
+    } = e;
+
+
+    switch (keyCode) {
+      case 8: {
+        //backspace
+
+        break;
+      }
+
+      case 9: {
+        // Tab
+
+        break;
+      }
+
+      case 20: {
+        //caps
+
+        break;
+      }
+
+      case 16: {
+        //Shift
+
+        break;
+      }
+
+      case 13: {
+        //Enter
+
+        break;
+      }
+
+      case 32: {
+        //space
+
+        break;
+      }
+
+      default: {
+        if (EN_KEY_LAYOUTS.indexOf(key) !== -1) {
+          this.properties.value = this.properties.capsLock ? this.inputValue + key.toUpperCase() : this.inputValue + key.toLowerCase();
+          this.updateInputValue();
+        }
+
+        break;
+      }
+    }
   }
 
   toggleCapsLock() {

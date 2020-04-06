@@ -11,8 +11,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const keyboard = new Keyboard(textArea);
   const keyboardElement = keyboard.createKeyboard();
-  keyboard.paintKeyboard();
-
+  
   document.body.append(texAreaElement);
   document.body.append(keyboardElement);
+  
+  keyboard.paintKeyboard();
+  texAreaElement.addEventListener("keydown", (e) => {
+    keyboard.handleKeyboardTyping(e);
+  });
 });
