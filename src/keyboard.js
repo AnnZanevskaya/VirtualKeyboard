@@ -2,8 +2,8 @@ import {
   ColorGenerator
 } from './colorGenerator';
 import {
-  Key
-} from './key';
+  KeyBuilder
+} from './keyBuilder';
 import {
   EN_KEY_LAYOUTS,
   EN_LINE_BREAK
@@ -14,7 +14,8 @@ export class Keyboard {
     this.keyboardElements = {
       main: null,
       keysContainer: null,
-      keys: []
+      keys: [],
+      textColor: null
     };
 
     this.properties = {
@@ -50,21 +51,115 @@ export class Keyboard {
     keys.forEach((el) => {
       el.style.color = textColor;
     });
+
+    this.keyboardElements.textColor = textColor;
   }
 
   createKeys() {
-    const fragment = document.createDocumentFragment();
+    let fragment = document.createDocumentFragment();
 
     EN_KEY_LAYOUTS.forEach((key) => {
-      const keyElement = Key.createKey(key);
+      let keyElement = null;
+
+      switch (key) {
+        case "backspace": {
+          keyElement = KeyBuilder.createKeyButton("backspace", "keyboard__key_wide");
+
+          keyElement.addEventListener("click", () => {
+            this.properties.value = this.properties.value
+              .substring(0, this.properties.value.length - 1);
+          });
+
+          break;
+        }
+
+        case "tab": {
+          keyElement = KeyBuilder.createKeyButton("keyboard_tab", "keyboard__key_wide");
+
+          keyElement.addEventListener("click", () => {
+            this.properties.value += "   ";
+          });
+
+          break;
+        }
+
+        case "caps": {
+          keyElement = KeyBuilder.createKeyButton("keyboard_capslock", "keyboard__key_wide", "keyboard__key_activatable");
+
+          keyElement.addEventListener("click", () => {
+            this.toggleCapsLock();
+
+            if (this.keyboardElements.textColor === 'white') {
+              keyElement.classList.toggle("keyboard__key_active-light", this.properties.capsLock);
+            } else {
+              keyElement.classList.toggle("keyboard__key_active-dark", this.properties.capsLock);
+            }
+          });
+
+          break;
+        }
+
+        case "shift": {
+          keyElement = KeyBuilder.createKeyButton("vertical_align_top", "keyboard__key_wide");
+
+          break;
+        }
+
+        case "enter": {
+          keyElement = KeyBuilder.createKeyButton("keyboard_return", "keyboard__key_wide");
+
+          keyElement.addEventListener("click", () => {
+            this.properties.value += "\n";
+          });
+
+          break;
+        }
+
+        case "space": {
+          keyElement = KeyBuilder.createKeyButton("space_bar", "keyboard__key_extra-wide");
+
+          keyElement.addEventListener("click", () => {
+            this.properties.value += " ";
+          });
+
+          break;
+        }
+
+        default: {
+          keyElement = KeyBuilder.createKeyButton();
+          keyElement.textContent = key.toLowerCase();
+
+          keyElement.addEventListener("click", () => {
+            this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+          });
+
+          break;
+        }
+      }
+
       fragment.append(keyElement);
+      fragment = this.checkLineBreak(fragment, key);
+    });
 
-      const insertLineBreak = EN_LINE_BREAK.indexOf(key) !== -1;
+    return fragment;
+  }
 
-      if (insertLineBreak) {
-        fragment.append(document.createElement("br"));
+  toggleCapsLock() {
+    this.properties.capsLock = !this.properties.capsLock;
+
+    this.keyboardElements.keys.forEach((key) => {
+      if (key.childElementCount === 0) {
+        key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
       }
     });
+  }
+
+  checkLineBreak(fragment, key) {
+    const lineBreak = EN_LINE_BREAK.indexOf(key) !== -1;
+
+    if (lineBreak) {
+      fragment.append(document.createElement("br"));
+    }
 
     return fragment;
   }

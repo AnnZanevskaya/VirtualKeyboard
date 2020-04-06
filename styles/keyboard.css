@@ -79,9 +79,14 @@ body {
   border-radius: 50%;
 }
 
-.keyboard__key_active::after {
-  background: rgb(168, 11, 44);
+.keyboard__key_active-light::after{
+  background: #7FFF00;
 }
+
+.keyboard__key_active-dark::after{
+  background:	#DC143C;
+}
+
 
 .keyboard__key_dark {
   background: rgba(0, 0, 0, 0.25);
