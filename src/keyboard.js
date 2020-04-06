@@ -10,13 +10,15 @@ import {
 } from './keyLayouts';
 
 export class Keyboard {
-  constructor() {
+  constructor(textArea) {
     this.keyboardElements = {
       main: null,
       keysContainer: null,
       keys: [],
       textColor: null
     };
+
+    this.textArea = textArea;
 
     this.properties = {
       value: "",
@@ -173,7 +175,10 @@ export class Keyboard {
   }
 
   updateInputValue() {
-    const textArea = document.querySelector(".keyboard-input");
-    textArea.value = this.properties.value;
+    this.textArea.setValue(this.properties.value);
+  }
+
+  getInputValue() {
+    return this.textArea.getValue();
   }
 }

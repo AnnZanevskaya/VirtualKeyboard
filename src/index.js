@@ -9,10 +9,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const textArea = new TextArea();
   const texAreaElement = textArea.createTextArea();
 
-  const keyboard = new Keyboard();
+  const keyboard = new Keyboard(textArea);
   const keyboardElement = keyboard.createKeyboard();
   keyboard.paintKeyboard();
-  
+
   document.body.append(texAreaElement);
   document.body.append(keyboardElement);
 });

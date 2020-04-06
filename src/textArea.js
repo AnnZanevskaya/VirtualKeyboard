@@ -9,4 +9,19 @@ export class TextArea {
 
     return this.textArea;
   }
+
+  getValue() {
+    return this.textArea.value;
+  }
+
+  setValue(value) {
+    this.textArea.value = value;
+    this.setCursor(value.length);
+  }
+
+  setCursor(position) {
+    this.textArea.focus();
+    this.textArea.selectionStart = position;
+    this.textArea.selectionEnd = position;
+  }
 }
