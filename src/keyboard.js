@@ -26,6 +26,10 @@ export class Keyboard {
     };
   }
 
+  get inputValue() {
+    return this.getInputValue();
+  }
+
   createKeyboard() {
     this.keyboardElements.main = document.createElement("div");
     this.keyboardElements.main.classList.add("keyboard");
@@ -68,8 +72,9 @@ export class Keyboard {
           keyElement = KeyBuilder.createKeyButton("backspace", "keyboard__key_wide");
 
           keyElement.addEventListener("click", () => {
-            this.properties.value = this.properties.value
-              .substring(0, this.properties.value.length - 1);
+            const value = this.inputValue;
+            this.properties.value = value
+              .substring(0, value.length - 1);
 
             this.updateInputValue();
           });
@@ -81,7 +86,7 @@ export class Keyboard {
           keyElement = KeyBuilder.createKeyButton("keyboard_tab", "keyboard__key_wide");
 
           keyElement.addEventListener("click", () => {
-            this.properties.value += "   ";
+            this.properties.value = `${this.inputValue}   `;
             this.updateInputValue();
           });
 
@@ -116,7 +121,7 @@ export class Keyboard {
           keyElement = KeyBuilder.createKeyButton("keyboard_return", "keyboard__key_wide");
 
           keyElement.addEventListener("click", () => {
-            this.properties.value += "\n";
+            this.properties.value = `${this.inputValue}\n`;
             this.updateInputValue();
           });
 
@@ -127,7 +132,7 @@ export class Keyboard {
           keyElement = KeyBuilder.createKeyButton("space_bar", "keyboard__key_extra-wide");
 
           keyElement.addEventListener("click", () => {
-            this.properties.value += " ";
+            this.properties.value = `${this.inputValue} `;
             this.updateInputValue();
           });
 
@@ -139,7 +144,7 @@ export class Keyboard {
           keyElement.textContent = key.toLowerCase();
 
           keyElement.addEventListener("click", () => {
-            this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+            this.properties.value = this.properties.capsLock ? this.inputValue + key.toUpperCase() : this.inputValue + key.toLowerCase();
             this.updateInputValue();
           });
 
