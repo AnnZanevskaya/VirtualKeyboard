@@ -75,8 +75,10 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.keyboard__key:active {
+.keyboard__key_pressed {
   background: rgba(255, 255, 255, 0.3);
+  transform: translate(1px, 1px);
+  transition: all 0.2s ease 0s;
 }
 
 .keyboard__key_wide {
