@@ -20,7 +20,7 @@ export class KeyboardBuider {
     this.painter = new KeyboardPainter();
   }
 
-  getKeyboardElement() {
+  createKeyboardElement() {
     this.keyboard = new Keyboard(this.textArea, this.painter);
 
     this.createKeyboard();
@@ -58,7 +58,7 @@ export class KeyboardBuider {
     colorInfo.innerText = "Press 'Shift' + 'Alt' to change keyboard color to your favorite";
 
     const languageInfo = document.createElement("p");
-    languageInfo.innerText = "Press 'Shift' + 'Ctrl' to change language";
+    languageInfo.innerText = "Press 'Ctrl' + 'Alt' to change language";
 
     const systemInfo = document.createElement("p");
     systemInfo.innerText = "Made at home isolation in Windows OS";

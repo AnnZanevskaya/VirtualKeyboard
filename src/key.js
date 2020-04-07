@@ -19,7 +19,7 @@ export class Key {
   }
 
   set onReleaseAction(onReleaseAction) {
-    document.addEventListener("mouseup", onReleaseAction);
+    this.element.addEventListener("mouseup", onReleaseAction);
     document.addEventListener("keyup", onReleaseAction);
   }
 
@@ -28,7 +28,11 @@ export class Key {
   }
 
   setTextContext(language, capsLock) {
-    this.element.textContent = capsLock ? this.getKeyLabel(language).toUpperCase() : this.getKeyLabel(language).toLowerCase();
+    if (capsLock) {
+      this.element.textContent = this.getKeyLabel(language).toUpperCase();
+    } else {
+      this.element.textContent = this.getKeyLabel(language).toLowerCase();
+    }
   }
 
   createKeyButton(iconName, ...classes) {

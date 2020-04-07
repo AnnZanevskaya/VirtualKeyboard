@@ -14,7 +14,7 @@ export class Keyboard {
   constructor(textArea, keyboardPainter) {
     this.keyboardPainter = keyboardPainter;
     this.textArea = textArea;
-
+    this.isShiftActive = false;
     this.properties = {
       value: "",
       capsLock: false,
@@ -22,6 +22,15 @@ export class Keyboard {
       source: [],
       pressed: new Set()
     };
+  }
+
+  setLanguage(language) {
+    this.properties.language = language;
+    window.localStorage.setItem("language", language);
+  }
+
+  getLanguage() {
+    return window.localStorage.getItem("language");
   }
 
   createKeys() {
@@ -60,7 +69,18 @@ export class Keyboard {
 
         case "shift": {
           key.createKeyButton("vertical_align_top", "keyboard__key_wide");
-          key.onclickAction = () => {};
+          let isClicked = false;
+
+          key.onclickAction = () => {
+            this.handleShiftAction(isClicked);
+            isClicked = true;
+          };
+
+          key.onReleaseAction = () => {
+            this.isShiftActive = false;
+            isClicked = false;
+            this.handleReleaseShiftAction();
+          };
 
           break;
         }
@@ -130,15 +150,6 @@ export class Keyboard {
     });
 
     return fragment;
-  }
-
-  setLanguage(language) {
-    this.properties.language = language;
-    window.localStorage.setItem("language", language);
-  }
-
-  getLanguage() {
-    return window.localStorage.getItem("language");
   }
 
   handleKeyPress(e) {
@@ -227,6 +238,27 @@ export class Keyboard {
     this.rerenderKeys();
   }
 
+  handleShiftAction(isClicked) {
+    if (!isClicked) {
+      this.isShiftActive = true;
+      const caps = !this.properties.capsLock;
+      this.properties.source.forEach((key) => {
+        if (SPECIALKEYS.indexOf(key.name) === -1) {
+          key.setTextContext(this.properties.language, caps);
+        }
+      });
+    }
+  }
+
+  handleReleaseShiftAction() {
+    const caps = this.properties.capsLock;
+    this.properties.source.forEach((key) => {
+      if (SPECIALKEYS.indexOf(key.name) === -1) {
+        key.setTextContext(this.properties.language, caps);
+      }
+    });
+  }
+
   handleEnterAction() {
     this.properties.value = `${this.getInputValue()}\n`;
     this.updateInputValue();
@@ -239,10 +271,17 @@ export class Keyboard {
 
   handleKeyAction(key) {
     const keyLabel = key.getKeyLabel(this.properties.language);
+    let capsState = this.properties.capsLock;
 
-    this.properties.value = this.properties.capsLock ?
-      this.getInputValue() + keyLabel.toUpperCase() :
-      this.getInputValue() + keyLabel.toLowerCase();
+    if (this.isShiftActive) {
+      capsState = !this.properties.capsLock;
+    }
+
+    if (capsState) {
+      this.properties.value = this.getInputValue() + keyLabel.toUpperCase();
+    } else {
+      this.properties.value = this.getInputValue() + keyLabel.toLowerCase();
+    }
 
     this.updateInputValue();
   }

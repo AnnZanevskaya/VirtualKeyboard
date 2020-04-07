@@ -11,7 +11,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const texAreaElement = textArea.createTextArea();
 
   const builder = new KeyboardBuider(textArea);
-  const keyboardElement = builder.getKeyboardElement();
+  const keyboardElement = builder.createKeyboardElement();
 
   document.body.append(texAreaElement);
   document.body.append(keyboardElement);
