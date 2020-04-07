@@ -3,6 +3,10 @@ import {
 } from './keyboard';
 
 import {
+  ColorGenerator
+} from './colorGenerator';
+
+import {
   KeyboardPainter
 } from './keyboardPainter';
 
@@ -20,6 +24,7 @@ export class KeyboardBuider {
     this.keyboard = new Keyboard(this.textArea, this.painter);
 
     this.createKeyboard();
+    this.setKeyboardLanguage();
 
     return this.main;
   }
@@ -82,5 +87,15 @@ export class KeyboardBuider {
 
   paintKeyboardInfo(keyboardInfo) {
     keyboardInfo.style.color = this.textColor;
+  }
+
+  setKeyboardLanguage() {
+    let userLanguage = this.keyboard.getLanguage();
+
+    if (userLanguage === null || userLanguage === "") {
+      userLanguage = "en";
+    }
+  
+    this.keyboard.setLanguage(userLanguage);
   }
 }

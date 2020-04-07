@@ -1,7 +1,4 @@
 import {
-  LINE_BREAK,
-  KEY_LAYOUTS,
-  SPECIALKEYS,
   HOT_KEYS
 } from './keyLayouts';
 

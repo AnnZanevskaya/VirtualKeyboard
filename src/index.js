@@ -1,6 +1,3 @@
-// import {
-//   Keyboard
-// } from './keyboard';
 import {
   TextArea
 } from './textArea';
@@ -8,9 +5,6 @@ import {
 import {
   KeyboardBuider
 } from './keyboardBuilder';
-import {
-  Keyboard
-} from './keyboard';
 
 window.addEventListener("DOMContentLoaded", () => {
   const textArea = new TextArea();
@@ -24,13 +18,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.body.append(texAreaElement);
   document.body.append(keyboardElement);
-
-  let userLanguage = keyboard.getLanguage();
-  if (userLanguage === null || userLanguage === "") {
-    userLanguage = "en";
-  }
-
-  keyboard.setLanguage(userLanguage);
 
   texAreaElement.addEventListener("keydown", (e) => {
     keyboard.handleKeyPress(e);
