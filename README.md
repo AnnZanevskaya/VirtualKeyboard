@@ -1,3 +1,3 @@
 # VirtualKeyboard
 
-https://annzanevskaya.github.io/virtualkeyboard
+https://annzanevskaya.github.io/VirtualKeyboard
