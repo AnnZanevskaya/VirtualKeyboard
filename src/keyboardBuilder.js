@@ -25,6 +25,7 @@ export class KeyboardBuider {
 
     this.createKeyboard();
     this.setKeyboardLanguage();
+    this.setEventListeners();
 
     return this.main;
   }
@@ -69,33 +70,23 @@ export class KeyboardBuider {
     return keyBoardInfo;
   }
 
-  paintKeyboard(keyboardElement) {
-    const colorGenerator = new ColorGenerator();
-
-    const textColor = colorGenerator.getTextColor();
-    this.textColor = textColor;
-
-    const backgroundColor = colorGenerator.getBackgroundColor();
-    keyboardElement.style.backgroundColor = backgroundColor;
-
-    const keys = document.querySelectorAll(".keyboard__key");
-
-    keys.forEach((el) => {
-      el.style.color = textColor;
-    });
-  }
-
-  paintKeyboardInfo(keyboardInfo) {
-    keyboardInfo.style.color = this.textColor;
-  }
-
   setKeyboardLanguage() {
     let userLanguage = this.keyboard.getLanguage();
 
     if (userLanguage === null || userLanguage === "") {
       userLanguage = "en";
     }
-  
+
     this.keyboard.setLanguage(userLanguage);
+  }
+  
+  setEventListeners() {
+    this.textArea.textArea.addEventListener("keydown", (e) => {
+      this.keyboard.handleKeyPress(e);
+    });
+
+    document.addEventListener("keyup", () => {
+      this.keyboard.handleKeyRelease();
+    });
   }
 }
