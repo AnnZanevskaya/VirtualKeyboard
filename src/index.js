@@ -18,32 +18,13 @@ window.addEventListener("DOMContentLoaded", () => {
   document.body.append(texAreaElement);
   document.body.append(keyboardElement);
 
-  const pressed = new Set();
-
   keyboard.paintKeyboard();
 
   texAreaElement.addEventListener("keydown", (e) => {
-    pressed.add(e.keyCode);
-
-    const { codes } = HOT_KEYS.filter((hotKey) => hotKey.name === "color")[0];
-
-    let isHandle = false;
-
-    codes.forEach((code) => {
-      if (!pressed.has(code) && !isHandle) {
-        keyboard.handleKeyboardTyping(e);
-        isHandle = true;
-      }
-    });
-
-    if (!isHandle) {
-      keyboard.handleKeyboardTyping(e);
-      keyboard.paintKeyboard();
-      pressed.clear();
-    }
+    keyboard.handleKeyPress(e);
   });
 
-  document.addEventListener("keyup", (e) => {
-    pressed.clear();
+  document.addEventListener("keyup", () => {
+    keyboard.hadleKeyRelease();
   });
 });

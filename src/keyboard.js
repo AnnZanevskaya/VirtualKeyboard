@@ -6,7 +6,8 @@ import {
 } from './key';
 import {
   EN_LINE_BREAK,
-  KEY_LAYOUTS1
+  KEY_LAYOUTS1,
+  HOT_KEYS
 } from './keyLayouts';
 
 export class Keyboard {
@@ -24,12 +25,9 @@ export class Keyboard {
       value: "",
       capsLock: false,
       language: "EN",
-      source: []
+      source: [],
+      pressed: new Set()
     };
-  }
-
-  get inputValue() {
-    return this.getInputValue();
   }
 
   createKeyboard() {
@@ -201,6 +199,33 @@ export class Keyboard {
     return fragment;
   }
 
+  handleKeyPress(e) {
+    this.properties.pressed.add(e.keyCode);
+
+    const {
+      codes
+    } = HOT_KEYS.filter((hotKey) => hotKey.name === "color")[0];
+
+    let isHandle = false;
+
+    codes.forEach((code) => {
+      if (!this.properties.pressed.has(code) && !isHandle) {
+        this.handleKeyboardTyping(e);
+        isHandle = true;
+      }
+    });
+
+    if (!isHandle) {
+      this.handleKeyboardTyping(e);
+      this.paintKeyboard();
+      this.properties.pressed.clear();
+    }
+  }
+
+  handleKeyRelease() {
+    this.properties.pressed.clear();
+  }
+
   handleKeyboardTyping(e) {
     const keys = this.properties.source.filter((el) => el.keyCode === e.keyCode);
 
@@ -234,7 +259,7 @@ export class Keyboard {
   }
 
   handleBackspaceAction() {
-    const value = this.inputValue;
+    const value = this.getInputValue();
     this.properties.value = value
       .substring(0, value.length - 1);
 
@@ -242,7 +267,7 @@ export class Keyboard {
   }
 
   handleTabAction() {
-    this.properties.value = `${this.inputValue}   `;
+    this.properties.value = `${this.getInputValue()}   `;
     this.updateInputValue();
   }
 
@@ -271,19 +296,22 @@ export class Keyboard {
   }
 
   handleEnterAction() {
-    this.properties.value = `${this.inputValue}\n`;
+    this.properties.value = `${this.getInputValue()}\n`;
     this.updateInputValue();
   }
 
   handleSpaceAction() {
-    this.properties.value = `${this.inputValue} `;
+    this.properties.value = `${this.getInputValue()} `;
     this.updateInputValue();
   }
 
   handleKeyAction(key) {
     const keyLabel = key.getKeyLabel(this.properties.language);
 
-    this.properties.value = this.properties.capsLock ? this.inputValue + keyLabel.toUpperCase() : this.inputValue + keyLabel.toLowerCase();
+    this.properties.value = this.properties.capsLock 
+      ? this.getInputValue() + keyLabel.toUpperCase() 
+      : this.getInputValue() + keyLabel.toLowerCase();
+      
     this.updateInputValue();
   }
 }
