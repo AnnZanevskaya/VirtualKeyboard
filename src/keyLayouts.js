@@ -1,5 +1,9 @@
 export const EN_LINE_BREAK = ["backspace", "p", "enter", "?"];
 
+export const HOT_KEYS = [
+  { name: "color", codes: [16, 18] },
+  { name: "language", codes: [16, 17] }]
+
 export const KEY_LAYOUTS1 = [
   { name: "1", ruName: "1", keyCode: 49 },
   { name: "2", ruName: "2", keyCode: 50 },
@@ -45,5 +49,7 @@ export const KEY_LAYOUTS1 = [
   { name: ",", ruName: "б", keyCode: 188 },
   { name: ".", ruName: "ю", keyCode: 190 },
   { name: "?", ruName: ".", keyCode: 191 },
+  { name: "ctrl", ruName: "ctrl", keyCode: 17 },
+  { name: "alt", ruName: "alt", keyCode: 18 },
   { name: "space", ruName: "space", keyCode: 32 }
 ];

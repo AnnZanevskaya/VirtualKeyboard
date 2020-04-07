@@ -74,6 +74,8 @@ export class Keyboard {
     const colorGenerator = new ColorGenerator();
 
     const textColor = colorGenerator.getTextColor();
+    this.keyboardElements.textColor = textColor;
+
     const backgroundColor = colorGenerator.getBackgroundColor();
     this.keyboardElements.main.style.backgroundColor = backgroundColor;
 
@@ -83,10 +85,12 @@ export class Keyboard {
       el.style.color = textColor;
     });
 
-    const keyboardInfo = document.querySelector(".keyboard__info");
-    keyboardInfo.style.color = textColor;
+    this.paintKeyboardInfo();
+  }
 
-    this.keyboardElements.textColor = textColor;
+  paintKeyboardInfo() {
+    const keyboardInfo = document.querySelector(".keyboard__info");
+    keyboardInfo.style.color = this.keyboardElements.textColor;
   }
 
   createKeys() {
@@ -144,6 +148,22 @@ export class Keyboard {
           key.onclickAction = () => {
             this.handleSpaceAction();
           };
+
+          break;
+        }
+
+        case "ctrl": {
+          key.createKeyButton("keyboard__key_wide");
+          key.onclickAction = () => {};
+          key.setTextContext(this.properties.language);
+
+          break;
+        }
+
+        case "alt": {
+          key.createKeyButton("keyboard__key_wide");
+          key.onclickAction = () => {};
+          key.setTextContext(this.properties.language);
 
           break;
         }
