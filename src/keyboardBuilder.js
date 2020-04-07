@@ -1,14 +1,5 @@
-import {
-  Keyboard
-} from './keyboard';
-
-import {
-  ColorGenerator
-} from './colorGenerator';
-
-import {
-  KeyboardPainter
-} from './keyboardPainter';
+import { Keyboard } from './keyboard';
+import { KeyboardPainter } from './keyboardPainter';
 
 export class KeyboardBuider {
   constructor(textArea) {
@@ -44,7 +35,7 @@ export class KeyboardBuider {
     const keyboardInfo = this.createKeboardInfo();
     this.main.append(keyboardInfo);
 
-    this.painter.paintKeyboard(this.main);
+    this.painter.paintKeyboard(this.main, this.keysContainer.childNodes);
     this.painter.paintKeyboardInfo(keyboardInfo);
 
     return this.main;

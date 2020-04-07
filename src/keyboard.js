@@ -1,14 +1,6 @@
-import {
-  Key
-} from './key';
-import {
-  LINE_BREAK,
-  KEY_LAYOUTS,
-  SPECIALKEYS,
-} from './keyLayouts';
-import {
-  SpecialActions
-} from './specialActions';
+import { Key } from './key';
+import { LINE_BREAK, KEY_LAYOUTS, SPECIALKEYS } from './keyLayouts';
+import { SpecialActions } from './specialActions';
 
 export class Keyboard {
   constructor(textArea, keyboardPainter) {
@@ -205,11 +197,7 @@ export class Keyboard {
   }
 
   handleBackspaceAction() {
-    const value = this.getInputValue();
-    this.properties.value = value
-      .substring(0, value.length - 1);
-
-    this.updateInputValue();
+    this.textArea.removeKey();
   }
 
   handleTabAction() {
@@ -277,13 +265,17 @@ export class Keyboard {
       capsState = !this.properties.capsLock;
     }
 
+    let keyValue = keyLabel;
+
     if (capsState) {
       this.properties.value = this.getInputValue() + keyLabel.toUpperCase();
+      keyValue = keyLabel.toUpperCase();
     } else {
       this.properties.value = this.getInputValue() + keyLabel.toLowerCase();
+      keyValue = keyLabel.toLowerCase();
     }
 
-    this.updateInputValue();
+    this.textArea.setKey(keyValue);
   }
 
   changeLanguage(e) {

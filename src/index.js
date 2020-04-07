@@ -1,10 +1,5 @@
-import {
-  TextArea
-} from './textArea';
-
-import {
-  KeyboardBuider
-} from './keyboardBuilder';
+import { TextArea } from './textArea';
+import { KeyboardBuider } from './keyboardBuilder';
 
 window.addEventListener("DOMContentLoaded", () => {
   const textArea = new TextArea();

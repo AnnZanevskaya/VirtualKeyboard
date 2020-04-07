@@ -3,7 +3,8 @@ export const SPECIALKEYS = ["backspace", "tab", "capslock", "tab", "shift", "spa
 
 export const HOT_KEYS = [
   { name: "color", codes: [16, 18] },
-  { name: "language", codes: [17, 18] }]
+  { name: "language", codes: [17, 18] }
+];
 
 export const KEY_LAYOUTS = [
   { name: "1", ruName: "1", keyCode: 49 },

@@ -1,12 +1,8 @@
-import {
-  HOT_KEYS
-} from './keyLayouts';
+import { HOT_KEYS } from './keyLayouts';
 
 export class SpecialActions {
   static isLanguageChange(pressedKeys) {
-    const {
-      codes
-    } = HOT_KEYS.filter((hotKey) => hotKey.name === "language")[0];
+    const { codes } = HOT_KEYS.filter((hotKey) => hotKey.name === "language")[0];
 
     let isMatchFilter = true;
 
@@ -24,9 +20,7 @@ export class SpecialActions {
   }
 
   static isColorChange(pressedKeys) {
-    const {
-      codes
-    } = HOT_KEYS.filter((hotKey) => hotKey.name === "color")[0];
+    const { codes } = HOT_KEYS.filter((hotKey) => hotKey.name === "color")[0];
 
     let isMatchFilter = true;
 

@@ -1,13 +1,11 @@
-import {
-  ColorGenerator
-} from './colorGenerator';
+import { ColorGenerator } from './colorGenerator';
 
 export class KeyboardPainter {
   constructor() {
     this.textColor = null;
   }
 
-  paintKeyboard(keyboardElement) {
+  paintKeyboard(keyboardElement, keyboardKeys) {
     const colorGenerator = new ColorGenerator();
 
     const textColor = colorGenerator.getTextColor();
@@ -21,16 +19,14 @@ export class KeyboardPainter {
 
     keyboardElement.style.backgroundColor = backgroundColor;
 
-    const keys = document.querySelectorAll(".keyboard__key");
+    if (keyboardKeys === undefined) {
+      keyboardKeys = document.querySelectorAll(".keyboard__key");
+    }
 
-    keys.forEach((el) => {
+    keyboardKeys.forEach((el) => {
       el.style.color = textColor;
     });
   }
-
-  // paintKeyboardInfo(keyboardInfo) {
-  //   keyboardInfo.style.color = this.textColor;
-  // }
 
   paintKeyboardInfo(keyboardInfo) {
     if (keyboardInfo === undefined) {
