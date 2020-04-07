@@ -18,8 +18,8 @@ window.addEventListener("DOMContentLoaded", () => {
   keyboard.paintKeyboard();
 
   let userLanguage = keyboard.getLanguage();
-  if (userLanguage === undefined || userLanguage === "") {
-    userLanguage = "EN";
+  if (userLanguage === null || userLanguage === "") {
+    userLanguage = "en";
   }
   
   keyboard.setLanguage(userLanguage);

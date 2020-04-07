@@ -24,7 +24,7 @@ export class Keyboard {
     this.properties = {
       value: "",
       capsLock: false,
-      language: "EN",
+      language: null,
       source: [],
       pressed: new Set()
     };
@@ -181,7 +181,7 @@ export class Keyboard {
             this.handleKeyAction(key);
           };
 
-          key.setTextContext(this.properties.language);
+          key.setTextContext(this.properties.language, this.properties.capsLock);
 
           break;
         }
@@ -211,24 +211,69 @@ export class Keyboard {
   handleKeyPress(e) {
     this.properties.pressed.add(e.keyCode);
 
+    let isSpecialKeyActivated = false;
+
+    isSpecialKeyActivated = isSpecialKeyActivated ||
+      this.checkColorChange(e) ||
+      this.checkLanguageChange(e);
+
+    if (!isSpecialKeyActivated) {
+      this.handleKeyboardTyping(e);
+    }
+  }
+
+  checkLanguageChange(e) {
+    const {
+      codes
+    } = HOT_KEYS.filter((hotKey) => hotKey.name === "language")[0];
+
+    let isMatchFilter = true;
+
+    codes.forEach((code) => {
+      if (!this.properties.pressed.has(code)) {
+        isMatchFilter = false;
+      }
+    });
+
+    if (!isMatchFilter) {
+      return false;
+    }
+
+    let language = this.getLanguage();
+
+    language = language === "en" ? "ru" : "en";
+
+    this.setLanguage(language);
+
+    this.changeKeyLanguage();
+    this.handleKeyboardTyping(e);
+    this.properties.pressed.clear();
+
+    return true;
+  }
+
+  checkColorChange(e) {
     const {
       codes
     } = HOT_KEYS.filter((hotKey) => hotKey.name === "color")[0];
 
-    let isHandle = false;
+    let isMatchFilter = true;
 
     codes.forEach((code) => {
-      if (!this.properties.pressed.has(code) && !isHandle) {
-        this.handleKeyboardTyping(e);
-        isHandle = true;
+      if (!this.properties.pressed.has(code)) {
+        isMatchFilter = false;
       }
     });
 
-    if (!isHandle) {
-      this.handleKeyboardTyping(e);
-      this.paintKeyboard();
-      this.properties.pressed.clear();
+    if (!isMatchFilter) {
+      return false;
     }
+
+    this.handleKeyboardTyping(e);
+    this.paintKeyboard();
+    this.properties.pressed.clear();
+
+    return true;
   }
 
   handleKeyRelease() {
@@ -322,5 +367,11 @@ export class Keyboard {
       this.getInputValue() + keyLabel.toLowerCase();
 
     this.updateInputValue();
+  }
+
+  changeKeyLanguage() {
+    this.properties.source.forEach((key) => {
+      key.setTextContext(this.properties.language, this.properties.capsLock);
+    });
   }
 }

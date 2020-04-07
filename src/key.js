@@ -24,11 +24,12 @@ export class Key {
   }
 
   getKeyLabel(language) {
-    return language === "EN" ? this.name.toLowerCase() : this.ruName.toLowerCase();
+    return language === "en" ? this.name.toLowerCase() : this.ruName.toLowerCase();
   }
 
-  setTextContext(language) {
-    this.element.textContent = this.getKeyLabel(language);
+  setTextContext(language, capsLock) {
+    // this.element.textContent = this.getKeyLabel(language);
+    this.element.textContent = capsLock ? this.getKeyLabel(language).toUpperCase() : this.getKeyLabel(language).toLowerCase();
   }
 
   createKeyButton(iconName, ...classes) {
