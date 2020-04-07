@@ -5,8 +5,9 @@ import {
   Key
 } from './key';
 import {
-  EN_LINE_BREAK,
-  KEY_LAYOUTS1,
+  LINE_BREAK,
+  KEY_LAYOUTS,
+  SPECIALKEYS,
   HOT_KEYS
 } from './keyLayouts';
 
@@ -103,7 +104,7 @@ export class Keyboard {
   createKeys() {
     let fragment = document.createDocumentFragment();
 
-    KEY_LAYOUTS1.forEach((keyLayout) => {
+    KEY_LAYOUTS.forEach((keyLayout) => {
       const key = new Key(keyLayout.name, keyLayout.ruName, keyLayout.keyCode);
 
       switch (keyLayout.name) {
@@ -295,7 +296,7 @@ export class Keyboard {
   }
 
   checkLineBreak(fragment, key) {
-    const lineBreak = EN_LINE_BREAK.indexOf(key) !== -1;
+    const lineBreak = LINE_BREAK.indexOf(key) !== -1;
 
     if (lineBreak) {
       fragment.append(document.createElement("br"));
@@ -371,7 +372,9 @@ export class Keyboard {
 
   changeKeyLanguage() {
     this.properties.source.forEach((key) => {
-      key.setTextContext(this.properties.language, this.properties.capsLock);
+      if (SPECIALKEYS.indexOf(key.name) === -1) {
+        key.setTextContext(this.properties.language, this.properties.capsLock);
+      }
     });
   }
 }

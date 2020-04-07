@@ -1,10 +1,11 @@
-export const EN_LINE_BREAK = ["backspace", "p", "enter", "?"];
+export const LINE_BREAK = ["backspace", "]", "enter", "?"];
+export const SPECIALKEYS = ["backspace", "tab", "capslock", "tab", "shift", "space", "enter"];
 
 export const HOT_KEYS = [
   { name: "color", codes: [16, 18] },
   { name: "language", codes: [16, 17] }]
 
-export const KEY_LAYOUTS1 = [
+export const KEY_LAYOUTS = [
   { name: "1", ruName: "1", keyCode: 49 },
   { name: "2", ruName: "2", keyCode: 50 },
   { name: "3", ruName: "3", keyCode: 51 },
@@ -27,6 +28,8 @@ export const KEY_LAYOUTS1 = [
   { name: "i", ruName: "ш", keyCode: 73 },
   { name: "o", ruName: "щ", keyCode: 79 },
   { name: "p", ruName: "з", keyCode: 80 },
+  { name: "[", ruName: "х", keyCode: 219 },
+  { name: "]", ruName: "ъ", keyCode: 221 },
   { name: "capslock", ruName: "capslock", keyCode: 20 },
   { name: "a", ruName: "ф", keyCode: 65 },
   { name: "s", ruName: "ы", keyCode: 83 },
@@ -37,6 +40,8 @@ export const KEY_LAYOUTS1 = [
   { name: "j", ruName: "о", keyCode: 74 },
   { name: "k", ruName: "л", keyCode: 75 },
   { name: "l", ruName: "д", keyCode: 76 },
+  { name: ";", ruName: "э", keyCode: 222 },
+  { name: "\\", ruName: "\\", keyCode: 220 },
   { name: "enter", ruName: "enter", keyCode: 13 },
   { name: "shift", ruName: "shift", keyCode: 16 },
   { name: "z", ruName: "я", keyCode: 90 },

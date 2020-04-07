@@ -28,7 +28,6 @@ export class Key {
   }
 
   setTextContext(language, capsLock) {
-    // this.element.textContent = this.getKeyLabel(language);
     this.element.textContent = capsLock ? this.getKeyLabel(language).toUpperCase() : this.getKeyLabel(language).toLowerCase();
   }
 
