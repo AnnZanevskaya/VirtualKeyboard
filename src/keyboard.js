@@ -188,14 +188,6 @@ export class Keyboard {
     return fragment;
   }
 
-  updateInputValue() {
-    this.textArea.setValue(this.properties.value);
-  }
-
-  getInputValue() {
-    return this.textArea.getValue();
-  }
-
   handleBackspaceAction() {
     this.textArea.removeKey();
   }
@@ -216,8 +208,6 @@ export class Keyboard {
       keyElement.classList.toggle("keyboard__key_active-dark", this.properties.capsLock);
       keyElement.classList.remove("keyboard__key_active-light");
     }
-
-    this.updateInputValue();
   }
 
   toggleCapsLock() {
@@ -265,10 +255,8 @@ export class Keyboard {
     let keyValue = keyLabel;
 
     if (capsState) {
-      this.properties.value = this.getInputValue() + keyLabel.toUpperCase();
       keyValue = keyLabel.toUpperCase();
     } else {
-      this.properties.value = this.getInputValue() + keyLabel.toLowerCase();
       keyValue = keyLabel.toLowerCase();
     }
 
