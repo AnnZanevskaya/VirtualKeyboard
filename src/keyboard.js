@@ -7,6 +7,9 @@ import {
   SPECIALKEYS,
   HOT_KEYS
 } from './keyLayouts';
+import {
+  SpecialActions
+} from './specialActions';
 
 export class Keyboard {
   constructor(textArea, keyboardPainter) {
@@ -142,71 +145,17 @@ export class Keyboard {
   handleKeyPress(e) {
     this.properties.pressed.add(e.keyCode);
 
-    let isSpecialKeyActivated = false;
-
-    isSpecialKeyActivated = isSpecialKeyActivated ||
-      this.checkColorChange(e) ||
-      this.checkLanguageChange(e);
-
-    if (!isSpecialKeyActivated) {
-      this.handleKeyboardTyping(e);
-    }
-  }
-
-  checkLanguageChange(e) {
-    const {
-      codes
-    } = HOT_KEYS.filter((hotKey) => hotKey.name === "language")[0];
-
-    let isMatchFilter = true;
-
-    codes.forEach((code) => {
-      if (!this.properties.pressed.has(code)) {
-        isMatchFilter = false;
-      }
-    });
-
-    if (!isMatchFilter) {
-      return false;
+    if (SpecialActions.isLanguageChange(this.properties.pressed)) {
+      this.changeLanguage(e);
+      return;
     }
 
-    let language = this.getLanguage();
-
-    language = language === "en" ? "ru" : "en";
-
-    this.setLanguage(language);
-
-    this.rerenderKeys();
-    this.handleKeyboardTyping(e);
-    this.properties.pressed.clear();
-
-    return true;
-  }
-
-  checkColorChange(e) {
-    const {
-      codes
-    } = HOT_KEYS.filter((hotKey) => hotKey.name === "color")[0];
-
-    let isMatchFilter = true;
-
-    codes.forEach((code) => {
-      if (!this.properties.pressed.has(code)) {
-        isMatchFilter = false;
-      }
-    });
-
-    if (!isMatchFilter) {
-      return false;
+    if (SpecialActions.isColorChange(this.properties.pressed)) {
+      this.changeColor(e);
+      return;
     }
 
     this.handleKeyboardTyping(e);
-    this.keyboardPainter.paintKeyboard();
-    this.keyboardPainter.paintKeyboardInfo();
-
-    this.properties.pressed.clear();
-
-    return true;
   }
 
   handleKeyRelease() {
@@ -297,6 +246,21 @@ export class Keyboard {
       this.getInputValue() + keyLabel.toLowerCase();
 
     this.updateInputValue();
+  }
+
+  changeLanguage(e) {
+    const language = this.getLanguage() === "en" ? "ru" : "en";
+    this.setLanguage(language);
+    this.rerenderKeys();
+    this.handleKeyboardTyping(e);
+    this.properties.pressed.clear();
+  }
+
+  changeColor(e) {
+    this.handleKeyboardTyping(e);
+    this.keyboardPainter.paintKeyboard();
+    this.keyboardPainter.paintKeyboardInfo();
+    this.properties.pressed.clear();
   }
 
   rerenderKeys() {

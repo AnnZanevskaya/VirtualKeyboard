@@ -21,10 +21,6 @@ export class KeyboardBuider {
 
     this.createKeyboard();
 
-    // const keyboardElement = keyboard.initKeyboard();
-
-    // this.keysContainer.append(keyboard.createKeys());
-
     return this.main;
   }
 
