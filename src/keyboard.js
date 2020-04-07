@@ -10,6 +10,9 @@ import {
   SPECIALKEYS,
   HOT_KEYS
 } from './keyLayouts';
+import {
+  KeyboardBuider
+} from './keyboardBuilder';
 
 export class Keyboard {
   constructor(textArea) {
@@ -29,40 +32,17 @@ export class Keyboard {
     };
   }
 
-  createKeyboard() {
-    this.keyboardElements.main = document.createElement("div");
-    this.keyboardElements.main.classList.add("keyboard");
+  initKeyboard() {
+    const keyboardBuilder = new KeyboardBuider();
+    this.keyboardElements.main = keyboardBuilder.createKeyboard();
 
-    const keysContainer = document.createElement("div");
-    keysContainer.classList.add("keyboard__keys");
+    const {
+      keysContainer
+    } = keyboardBuilder;
+
     keysContainer.append(this.createKeys());
 
-    this.keyboardElements.main.append(keysContainer);
-
-    const keyboardInfo = this.createKeboardInfo();
-    this.keyboardElements.main.append(keyboardInfo);
-
     return this.keyboardElements.main;
-  }
-
-  createKeboardInfo() {
-    const keyBoardInfo = document.createElement("div");
-    keyBoardInfo.classList.add("keyboard__info");
-
-    const colorInfo = document.createElement("p");
-    colorInfo.innerText = "Press 'Shift' + 'Alt' to change keyboard color to your favorite";
-
-    const languageInfo = document.createElement("p");
-    languageInfo.innerText = "Press 'Shift' + 'Ctrl' to change language";
-
-    const systemInfo = document.createElement("p");
-    systemInfo.innerText = "Made at home isolation in Windows OS";
-
-    keyBoardInfo.append(colorInfo);
-    keyBoardInfo.append(languageInfo);
-    keyBoardInfo.append(systemInfo);
-
-    return keyBoardInfo;
   }
 
   paintKeyboard() {

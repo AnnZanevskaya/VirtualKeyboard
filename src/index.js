@@ -10,7 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const texAreaElement = textArea.createTextArea();
 
   const keyboard = new Keyboard(textArea);
-  const keyboardElement = keyboard.createKeyboard();
+  const keyboardElement = keyboard.initKeyboard();
 
   document.body.append(texAreaElement);
   document.body.append(keyboardElement);
