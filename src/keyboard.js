@@ -15,8 +15,6 @@ export class Keyboard {
   constructor(textArea) {
     this.keyboardElements = {
       main: null,
-      keysContainer: null,
-      keys: [],
       textColor: null
     };
 
@@ -31,26 +29,15 @@ export class Keyboard {
     };
   }
 
-  setLanguage(language) {
-    this.properties.language = language;
-    window.localStorage.setItem("language", language);
-  }
-
-  getLanguage() {
-    return window.localStorage.getItem("language");
-  }
-
   createKeyboard() {
     this.keyboardElements.main = document.createElement("div");
     this.keyboardElements.main.classList.add("keyboard");
 
-    this.keyboardElements.keysContainer = document.createElement("div");
-    this.keyboardElements.keysContainer.classList.add("keyboard__keys");
-    this.keyboardElements.keysContainer.append(this.createKeys());
+    const keysContainer = document.createElement("div");
+    keysContainer.classList.add("keyboard__keys");
+    keysContainer.append(this.createKeys());
 
-    this.keyboardElements.keys = this.keyboardElements.keysContainer.querySelectorAll(".keyboard__key");
-
-    this.keyboardElements.main.append(this.keyboardElements.keysContainer);
+    this.keyboardElements.main.append(keysContainer);
 
     const keyboardInfo = this.createKeboardInfo();
     this.keyboardElements.main.append(keyboardInfo);
@@ -209,6 +196,16 @@ export class Keyboard {
     return fragment;
   }
 
+  setLanguage(language) {
+    this.properties.language = language;
+    window.localStorage.setItem("language", language);
+  }
+
+  getLanguage() {
+    return window.localStorage.getItem("language");
+  }
+
+
   handleKeyPress(e) {
     this.properties.pressed.add(e.keyCode);
 
@@ -246,7 +243,7 @@ export class Keyboard {
 
     this.setLanguage(language);
 
-    this.changeKeyLanguage();
+    this.rerenderKeys();
     this.handleKeyboardTyping(e);
     this.properties.pressed.clear();
 
@@ -344,12 +341,7 @@ export class Keyboard {
 
   toggleCapsLock() {
     this.properties.capsLock = !this.properties.capsLock;
-
-    this.keyboardElements.keys.forEach((key) => {
-      if (key.childElementCount === 0) {
-        key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
-      }
-    });
+    this.rerenderKeys();
   }
 
   handleEnterAction() {
@@ -372,7 +364,7 @@ export class Keyboard {
     this.updateInputValue();
   }
 
-  changeKeyLanguage() {
+  rerenderKeys() {
     this.properties.source.forEach((key) => {
       if (SPECIALKEYS.indexOf(key.name) === -1) {
         key.setTextContext(this.properties.language, this.properties.capsLock);
