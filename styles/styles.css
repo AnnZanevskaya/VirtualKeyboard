@@ -76,9 +76,17 @@ body {
 }
 
 .keyboard__key_pressed {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   transform: translate(1px, 1px);
   transition: all 0.2s ease 0s;
+}
+
+.keyboard__key_pressed-light{
+  background: #7fff00;
+}
+
+.keyboard__key_pressed-dark{
+  background: #009000;
 }
 
 .keyboard__key_wide {
@@ -108,7 +116,7 @@ body {
 }
 
 .keyboard__key_active-dark::after {
-  background: #dc143c;
+  background: #009000;
 }
 
 
