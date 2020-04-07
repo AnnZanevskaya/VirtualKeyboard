@@ -333,8 +333,10 @@ export class Keyboard {
 
     if (this.keyboardElements.textColor === 'white') {
       keyElement.classList.toggle("keyboard__key_active-light", this.properties.capsLock);
+      keyElement.classList.remove("keyboard__key_active-dark");
     } else {
       keyElement.classList.toggle("keyboard__key_active-dark", this.properties.capsLock);
+      keyElement.classList.remove("keyboard__key_active-light");
     }
 
     this.updateInputValue();
