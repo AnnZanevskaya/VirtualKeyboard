@@ -44,7 +44,30 @@ export class Keyboard {
 
     this.keyboardElements.main.append(this.keyboardElements.keysContainer);
 
+    const keyboardInfo = this.createKeboardInfo();
+    this.keyboardElements.main.append(keyboardInfo);
+
     return this.keyboardElements.main;
+  }
+
+  createKeboardInfo() {
+    const keyBoardInfo = document.createElement("div");
+    keyBoardInfo.classList.add("keyboard__info");
+
+    const colorInfo = document.createElement("p");
+    colorInfo.innerText = "Press 'Shift' + 'Alt' to change keyboard color to your favorite";
+
+    const languageInfo = document.createElement("p");
+    languageInfo.innerText = "Press 'Shift' + 'Ctrl' to change language";
+
+    const systemInfo = document.createElement("p");
+    systemInfo.innerText = "Made at home isolation in Windows OS";
+
+    keyBoardInfo.append(colorInfo);
+    keyBoardInfo.append(languageInfo);
+    keyBoardInfo.append(systemInfo);
+
+    return keyBoardInfo;
   }
 
   paintKeyboard() {
@@ -59,6 +82,9 @@ export class Keyboard {
     keys.forEach((el) => {
       el.style.color = textColor;
     });
+
+    const keyboardInfo = document.querySelector(".keyboard__info");
+    keyboardInfo.style.color = textColor;
 
     this.keyboardElements.textColor = textColor;
   }
