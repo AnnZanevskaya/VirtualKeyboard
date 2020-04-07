@@ -1,7 +1,4 @@
 import {
-  ColorGenerator
-} from './colorGenerator';
-import {
   Key
 } from './key';
 import {
@@ -10,17 +7,10 @@ import {
   SPECIALKEYS,
   HOT_KEYS
 } from './keyLayouts';
-import {
-  KeyboardBuider
-} from './keyboardBuilder';
 
 export class Keyboard {
-  constructor(textArea) {
-    this.keyboardElements = {
-      main: null,
-      textColor: null
-    };
-
+  constructor(textArea, keyboardPainter) {
+    this.keyboardPainter = keyboardPainter;
     this.textArea = textArea;
 
     this.properties = {
@@ -30,42 +20,6 @@ export class Keyboard {
       source: [],
       pressed: new Set()
     };
-  }
-
-  initKeyboard() {
-    const keyboardBuilder = new KeyboardBuider();
-    this.keyboardElements.main = keyboardBuilder.createKeyboard();
-
-    const {
-      keysContainer
-    } = keyboardBuilder;
-
-    keysContainer.append(this.createKeys());
-
-    return this.keyboardElements.main;
-  }
-
-  paintKeyboard() {
-    const colorGenerator = new ColorGenerator();
-
-    const textColor = colorGenerator.getTextColor();
-    this.keyboardElements.textColor = textColor;
-
-    const backgroundColor = colorGenerator.getBackgroundColor();
-    this.keyboardElements.main.style.backgroundColor = backgroundColor;
-
-    const keys = document.querySelectorAll(".keyboard__key");
-
-    keys.forEach((el) => {
-      el.style.color = textColor;
-    });
-
-    this.paintKeyboardInfo();
-  }
-
-  paintKeyboardInfo() {
-    const keyboardInfo = document.querySelector(".keyboard__info");
-    keyboardInfo.style.color = this.keyboardElements.textColor;
   }
 
   createKeys() {
@@ -156,7 +110,7 @@ export class Keyboard {
       }
 
       key.onPressAction = () => {
-        if (this.keyboardElements.textColor === 'white') {
+        if (this.keyboardPainter.textColor === 'white') {
           key.element.classList.add("keyboard__key_pressed", "keyboard__key_pressed-light");
         } else {
           key.element.classList.add("keyboard__key_pressed", "keyboard__key_pressed-dark");
@@ -184,7 +138,6 @@ export class Keyboard {
   getLanguage() {
     return window.localStorage.getItem("language");
   }
-
 
   handleKeyPress(e) {
     this.properties.pressed.add(e.keyCode);
@@ -248,7 +201,9 @@ export class Keyboard {
     }
 
     this.handleKeyboardTyping(e);
-    this.paintKeyboard();
+    this.keyboardPainter.paintKeyboard();
+    this.keyboardPainter.paintKeyboardInfo();
+
     this.properties.pressed.clear();
 
     return true;
@@ -308,7 +263,7 @@ export class Keyboard {
 
     const keyElement = this.properties.source.filter((key) => key.keyCode === 20)[0].element;
 
-    if (this.keyboardElements.textColor === 'white') {
+    if (this.keyboardPainter.textColor === 'white') {
       keyElement.classList.toggle("keyboard__key_active-light", this.properties.capsLock);
       keyElement.classList.remove("keyboard__key_active-dark");
     } else {

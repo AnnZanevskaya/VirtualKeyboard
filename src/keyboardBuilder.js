@@ -1,21 +1,51 @@
+import {
+  Keyboard
+} from './keyboard';
+
+import {
+  KeyboardPainter
+} from './keyboardPainter';
+
 export class KeyboardBuider {
-  constructor() {
+  constructor(textArea) {
+    this.textArea = textArea;
     this.keysContainer = null;
+    this.keyboard = null;
+    this.main = null;
+    this.textColor = null;
+    this.painter = new KeyboardPainter();
+  }
+
+  getKeyboardElement() {
+    this.keyboard = new Keyboard(this.textArea, this.painter);
+
+    this.createKeyboard();
+
+    // const keyboardElement = keyboard.initKeyboard();
+
+    // this.keysContainer.append(keyboard.createKeys());
+
+    return this.main;
   }
 
   createKeyboard() {
-    const main = document.createElement("div");
-    main.classList.add("keyboard");
+    this.main = document.createElement("div");
+    this.main.classList.add("keyboard");
 
     this.keysContainer = document.createElement("div");
     this.keysContainer.classList.add("keyboard__keys");
 
-    main.append(this.keysContainer);
+    this.keysContainer.append(this.keyboard.createKeys());
+
+    this.main.append(this.keysContainer);
 
     const keyboardInfo = this.createKeboardInfo();
-    main.append(keyboardInfo);
+    this.main.append(keyboardInfo);
 
-    return main;
+    this.painter.paintKeyboard(this.main);
+    this.painter.paintKeyboardInfo(keyboardInfo);
+
+    return this.main;
   }
 
   createKeboardInfo() {
@@ -36,5 +66,25 @@ export class KeyboardBuider {
     keyBoardInfo.append(systemInfo);
 
     return keyBoardInfo;
+  }
+
+  paintKeyboard(keyboardElement) {
+    const colorGenerator = new ColorGenerator();
+
+    const textColor = colorGenerator.getTextColor();
+    this.textColor = textColor;
+
+    const backgroundColor = colorGenerator.getBackgroundColor();
+    keyboardElement.style.backgroundColor = backgroundColor;
+
+    const keys = document.querySelectorAll(".keyboard__key");
+
+    keys.forEach((el) => {
+      el.style.color = textColor;
+    });
+  }
+
+  paintKeyboardInfo(keyboardInfo) {
+    keyboardInfo.style.color = this.textColor;
   }
 }
