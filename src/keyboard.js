@@ -30,6 +30,15 @@ export class Keyboard {
     };
   }
 
+  setLanguage(language) {
+    this.properties.language = language;
+    window.localStorage.setItem("language", language);
+  }
+
+  getLanguage() {
+    return window.localStorage.getItem("language");
+  }
+
   createKeyboard() {
     this.keyboardElements.main = document.createElement("div");
     this.keyboardElements.main.classList.add("keyboard");
@@ -308,10 +317,10 @@ export class Keyboard {
   handleKeyAction(key) {
     const keyLabel = key.getKeyLabel(this.properties.language);
 
-    this.properties.value = this.properties.capsLock 
-      ? this.getInputValue() + keyLabel.toUpperCase() 
-      : this.getInputValue() + keyLabel.toLowerCase();
-      
+    this.properties.value = this.properties.capsLock ?
+      this.getInputValue() + keyLabel.toUpperCase() :
+      this.getInputValue() + keyLabel.toLowerCase();
+
     this.updateInputValue();
   }
 }

@@ -4,9 +4,6 @@ import {
 import {
   TextArea
 } from './textArea';
-import {
-  HOT_KEYS
-} from './keyLayouts';
 
 window.addEventListener("DOMContentLoaded", () => {
   const textArea = new TextArea();
@@ -20,11 +17,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
   keyboard.paintKeyboard();
 
+  let userLanguage = keyboard.getLanguage();
+  if (userLanguage === undefined || userLanguage === "") {
+    userLanguage = "EN";
+  }
+  
+  keyboard.setLanguage(userLanguage);
+
   texAreaElement.addEventListener("keydown", (e) => {
     keyboard.handleKeyPress(e);
   });
 
   document.addEventListener("keyup", () => {
-    keyboard.hadleKeyRelease();
+    keyboard.handleKeyRelease();
   });
 });
