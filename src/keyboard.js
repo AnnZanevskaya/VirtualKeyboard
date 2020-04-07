@@ -201,8 +201,7 @@ export class Keyboard {
   }
 
   handleTabAction() {
-    this.properties.value = `${this.getInputValue()}   `;
-    this.updateInputValue();
+    this.textArea.setKey("  ");
   }
 
   handleCapsLockAction() {
@@ -248,13 +247,11 @@ export class Keyboard {
   }
 
   handleEnterAction() {
-    this.properties.value = `${this.getInputValue()}\n`;
-    this.updateInputValue();
+    this.textArea.setKey("\n");
   }
 
   handleSpaceAction() {
-    this.properties.value = `${this.getInputValue()} `;
-    this.updateInputValue();
+    this.textArea.setKey(" ");
   }
 
   handleKeyAction(key) {
