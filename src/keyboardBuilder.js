@@ -14,8 +14,8 @@ export class KeyboardBuider {
   createKeyboardElement() {
     this.keyboard = new Keyboard(this.textArea, this.painter);
 
-    this.createKeyboard();
     this.setKeyboardLanguage();
+    this.createKeyboard();
     this.setEventListeners();
 
     return this.main;
