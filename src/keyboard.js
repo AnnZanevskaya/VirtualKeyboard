@@ -1,0 +1,288 @@
+import { Key } from './key';
+import { LINE_BREAK, KEY_LAYOUTS, SPECIALKEYS } from './keyLayouts';
+import { SpecialActions } from './specialActions';
+
+export class Keyboard {
+  constructor(textArea, keyboardPainter) {
+    this.keyboardPainter = keyboardPainter;
+    this.textArea = textArea;
+    this.isShiftActive = false;
+    this.properties = {
+      value: "",
+      capsLock: false,
+      language: null,
+      source: [],
+      pressed: new Set()
+    };
+  }
+
+  setLanguage(language) {
+    this.properties.language = language;
+    window.localStorage.setItem("language", language);
+  }
+
+  getLanguage() {
+    return window.localStorage.getItem("language");
+  }
+
+  createKeys() {
+    let fragment = document.createDocumentFragment();
+
+    KEY_LAYOUTS.forEach((keyLayout) => {
+      const key = new Key(keyLayout.name, keyLayout.ruName, keyLayout.keyCode);
+
+      switch (keyLayout.name) {
+        case "backspace": {
+          key.createKeyButton("backspace", "keyboard__key_wide");
+          key.onclickAction = () => {
+            this.handleBackspaceAction();
+          };
+
+          break;
+        }
+
+        case "tab": {
+          key.createKeyButton("keyboard_tab", "keyboard__key_wide");
+          key.onclickAction = () => {
+            this.handleTabAction();
+          };
+
+          break;
+        }
+
+        case "capslock": {
+          key.createKeyButton("keyboard_capslock", "keyboard__key_wide", "keyboard__key_activatable");
+          key.onclickAction = () => {
+            this.handleCapsLockAction();
+          };
+
+          break;
+        }
+
+        case "shift": {
+          key.createKeyButton("vertical_align_top", "keyboard__key_wide");
+          let isClicked = false;
+
+          key.onclickAction = () => {
+            this.handleShiftAction(isClicked);
+            isClicked = true;
+          };
+
+          key.onReleaseAction = () => {
+            this.isShiftActive = false;
+            isClicked = false;
+            this.handleReleaseShiftAction();
+          };
+
+          break;
+        }
+
+        case "enter": {
+          key.createKeyButton("keyboard_return", "keyboard__key_wide");
+          key.onclickAction = () => {
+            this.handleEnterAction();
+          };
+
+          break;
+        }
+
+        case "space": {
+          key.createKeyButton("space_bar", "keyboard__key_extra-wide");
+          key.onclickAction = () => {
+            this.handleSpaceAction();
+          };
+
+          break;
+        }
+
+        case "ctrl": {
+          key.createKeyButton("keyboard__key_wide");
+          key.onclickAction = () => {};
+          key.setTextContext(this.properties.language);
+
+          break;
+        }
+
+        case "alt": {
+          key.createKeyButton("keyboard__key_wide");
+          key.onclickAction = () => {};
+          key.setTextContext(this.properties.language);
+
+          break;
+        }
+
+        default: {
+          key.createKeyButton();
+          key.onclickAction = () => {
+            this.handleKeyAction(key);
+          };
+
+          key.setTextContext(this.properties.language, this.properties.capsLock);
+
+          break;
+        }
+      }
+
+      key.onPressAction = () => {
+        if (this.keyboardPainter.textColor === 'white') {
+          key.element.classList.add("keyboard__key_pressed", "keyboard__key_pressed-light");
+        } else {
+          key.element.classList.add("keyboard__key_pressed", "keyboard__key_pressed-dark");
+        }
+      };
+
+      key.onReleaseAction = () => {
+        key.element.classList.remove("keyboard__key_pressed", "keyboard__key_pressed-light", "keyboard__key_pressed-dark");
+      };
+
+      fragment.append(key.element);
+      fragment = this.checkLineBreak(fragment, keyLayout.name);
+
+      this.properties.source.push(key);
+    });
+
+    return fragment;
+  }
+
+  handleKeyPress(e) {
+    this.properties.pressed.add(e.keyCode);
+
+    if (SpecialActions.isLanguageChange(this.properties.pressed)) {
+      this.changeLanguage(e);
+      return;
+    }
+
+    if (SpecialActions.isColorChange(this.properties.pressed)) {
+      this.changeColor(e);
+      return;
+    }
+
+    this.handleKeyboardTyping(e);
+  }
+
+  handleKeyRelease() {
+    this.properties.pressed.clear();
+  }
+
+  handleKeyboardTyping(e) {
+    const keys = this.properties.source.filter((el) => el.keyCode === e.keyCode);
+
+    if (keys.length === 0) {
+      return;
+    }
+
+    const key = keys[0];
+
+    e.preventDefault();
+    key.keyPressedAction();
+    key.action();
+  }
+
+  checkLineBreak(fragment, key) {
+    const lineBreak = LINE_BREAK.indexOf(key) !== -1;
+
+    if (lineBreak) {
+      fragment.append(document.createElement("br"));
+    }
+
+    return fragment;
+  }
+
+  handleBackspaceAction() {
+    this.textArea.removeKey();
+  }
+
+  handleTabAction() {
+    this.textArea.setKey("  ");
+  }
+
+  handleCapsLockAction() {
+    this.toggleCapsLock();
+
+    const keyElement = this.properties.source.filter((key) => key.keyCode === 20)[0].element;
+
+    if (this.keyboardPainter.textColor === 'white') {
+      keyElement.classList.toggle("keyboard__key_active-light", this.properties.capsLock);
+      keyElement.classList.remove("keyboard__key_active-dark");
+    } else {
+      keyElement.classList.toggle("keyboard__key_active-dark", this.properties.capsLock);
+      keyElement.classList.remove("keyboard__key_active-light");
+    }
+  }
+
+  toggleCapsLock() {
+    this.properties.capsLock = !this.properties.capsLock;
+    this.rerenderKeys();
+  }
+
+  handleShiftAction(isClicked) {
+    if (!isClicked) {
+      this.isShiftActive = true;
+      const caps = !this.properties.capsLock;
+      this.properties.source.forEach((key) => {
+        if (SPECIALKEYS.indexOf(key.name) === -1) {
+          key.setTextContext(this.properties.language, caps);
+        }
+      });
+    }
+  }
+
+  handleReleaseShiftAction() {
+    const caps = this.properties.capsLock;
+    this.properties.source.forEach((key) => {
+      if (SPECIALKEYS.indexOf(key.name) === -1) {
+        key.setTextContext(this.properties.language, caps);
+      }
+    });
+  }
+
+  handleEnterAction() {
+    this.textArea.setKey("\n");
+  }
+
+  handleSpaceAction() {
+    this.textArea.setKey(" ");
+  }
+
+  handleKeyAction(key) {
+    const keyLabel = key.getKeyLabel(this.properties.language);
+    let capsState = this.properties.capsLock;
+
+    if (this.isShiftActive) {
+      capsState = !this.properties.capsLock;
+    }
+
+    let keyValue = keyLabel;
+
+    if (capsState) {
+      keyValue = keyLabel.toUpperCase();
+    } else {
+      keyValue = keyLabel.toLowerCase();
+    }
+
+    this.textArea.setKey(keyValue);
+  }
+
+  changeLanguage(e) {
+    const language = this.getLanguage() === "en" ? "ru" : "en";
+    this.setLanguage(language);
+    this.rerenderKeys();
+    this.handleKeyboardTyping(e);
+    this.properties.pressed.clear();
+  }
+
+  changeColor(e) {
+    this.handleKeyboardTyping(e);
+    this.keyboardPainter.paintKeyboard();
+    this.keyboardPainter.paintKeyboardInfo();
+    this.properties.pressed.clear();
+  }
+
+  rerenderKeys() {
+    this.properties.source.forEach((key) => {
+      if (SPECIALKEYS.indexOf(key.name) === -1) {
+        key.setTextContext(this.properties.language, this.properties.capsLock);
+      }
+    });
+  }
+}

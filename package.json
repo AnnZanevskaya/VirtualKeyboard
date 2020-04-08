@@ -1,0 +1,30 @@
+{
+  "name": "virtualkeyboard",
+  "version": "1.0.0",
+  "description": "https://annzanevskaya.github.io/virtualkeyboard",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "dev": "webpack --mode development",
+    "prod": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnnZanevskaya/VirtualKeyboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnnZanevskaya/VirtualKeyboard/issues"
+  },
+  "homepage": "https://github.com/AnnZanevskaya/VirtualKeyboard#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-html": "^6.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}
